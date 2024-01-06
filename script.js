@@ -5,9 +5,17 @@ const score0Ele = document.querySelector('#score--0');
 const score1Ele = document.getElementById('score--1');
 const diceEle = document.querySelector('.dice');
 const rollDiceEle = document.querySelector('.btn--roll');
+const holdEle = document.querySelector('.btn--hold');
 const current0Ele = document.getElementById('current--0');
 const player0 = document.querySelector('.player--0');
 const player1 = document.querySelector('.player--1');
+
+function switchPlayer() {
+  currentScore = 0;
+  activePlayer = activePlayer === 0 ? 1 : 0;
+  player0.classList.toggle('player--active');
+  player1.classList.toggle('player--active');
+}
 
 //Starting conditions
 score0Ele.textContent = 0;
@@ -29,9 +37,21 @@ rollDiceEle.addEventListener('click', () => {
       currentScore;
   } else {
     document.getElementById(`current--${activePlayer}`).textContent = 0;
-    currentScore = 0;
-    activePlayer = activePlayer === 0 ? 1 : 0;
-    player0.classList.toggle('player--active');
-    player1.classList.toggle('player--active');
+
+    //Switch player
+    switchPlayer();
   }
+});
+
+// let totalScore = 0;
+
+holdEle.addEventListener('click', () => {
+  let totalScore = Number(
+    document.getElementById(`score--${activePlayer}`).textContent
+  );
+  totalScore += currentScore;
+  document.getElementById(`score--${activePlayer}`).textContent = totalScore;
+
+  //Switch player
+  switchPlayer();
 });
