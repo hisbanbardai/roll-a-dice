@@ -21,37 +21,54 @@ function switchPlayer() {
 score0Ele.textContent = 0;
 score1Ele.textContent = 0;
 let activePlayer = 0;
+let isPlaying = true;
 diceEle.classList.add('hidden');
 
 //Rolling Dice Functionality
 let currentScore = 0;
 
 rollDiceEle.addEventListener('click', () => {
-  const diceNumber = Math.floor(Math.random() * 6 + 1);
-  diceEle.classList.remove('hidden');
-  diceEle.src = `dice-${diceNumber}.png`;
+  if (isPlaying) {
+    const diceNumber = Math.floor(Math.random() * 6 + 1);
+    diceEle.classList.remove('hidden');
+    diceEle.src = `dice-${diceNumber}.png`;
 
-  if (diceNumber !== 1) {
-    currentScore += diceNumber;
-    document.getElementById(`current--${activePlayer}`).textContent =
-      currentScore;
-  } else {
-    document.getElementById(`current--${activePlayer}`).textContent = 0;
+    if (diceNumber !== 1) {
+      currentScore += diceNumber;
+      document.getElementById(`current--${activePlayer}`).textContent =
+        currentScore;
+    } else {
+      document.getElementById(`current--${activePlayer}`).textContent = 0;
 
-    //Switch player
-    switchPlayer();
+      //Switch player
+      switchPlayer();
+    }
   }
 });
 
 // let totalScore = 0;
 
 holdEle.addEventListener('click', () => {
-  let totalScore = Number(
-    document.getElementById(`score--${activePlayer}`).textContent
-  );
-  totalScore += currentScore;
-  document.getElementById(`score--${activePlayer}`).textContent = totalScore;
+  if (isPlaying) {
+    //Add current score to current player's total score
+    let totalScore = Number(
+      document.getElementById(`score--${activePlayer}`).textContent
+    );
+    totalScore += currentScore;
+    document.getElementById(`score--${activePlayer}`).textContent = totalScore;
 
-  //Switch player
-  switchPlayer();
+    if (totalScore >= 20) {
+      isPlaying = false;
+      diceEle.classList.add('hidden');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.add('player--winner');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.remove('player--active');
+    } else {
+      //Switch player
+      switchPlayer();
+    }
+  }
 });
