@@ -6,7 +6,9 @@ const score1Ele = document.getElementById('score--1');
 const diceEle = document.querySelector('.dice');
 const rollDiceEle = document.querySelector('.btn--roll');
 const holdEle = document.querySelector('.btn--hold');
+const newEle = document.querySelector('.btn--new');
 const current0Ele = document.getElementById('current--0');
+const current1Ele = document.getElementById('current--1');
 const player0 = document.querySelector('.player--0');
 const player1 = document.querySelector('.player--1');
 
@@ -46,12 +48,12 @@ rollDiceEle.addEventListener('click', () => {
   }
 });
 
-// let totalScore = 0;
+let totalScore = 0;
 
 holdEle.addEventListener('click', () => {
   if (isPlaying) {
     //Add current score to current player's total score
-    let totalScore = Number(
+    totalScore = Number(
       document.getElementById(`score--${activePlayer}`).textContent
     );
     totalScore += currentScore;
@@ -71,4 +73,22 @@ holdEle.addEventListener('click', () => {
       switchPlayer();
     }
   }
+});
+
+newEle.addEventListener('click', () => {
+  currentScore = 0;
+  totalScore = 0;
+  current0Ele.textContent = 0;
+  current1Ele.textContent = 0;
+  score0Ele.textContent = 0;
+  score1Ele.textContent = 0;
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.remove('player--winner');
+  activePlayer = 0;
+  isPlaying = true;
+  diceEle.classList.add('hidden');
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.add('player--active');
 });
